@@ -14,7 +14,7 @@ rather than a mock.
 - **Explainability** — value drivers measured against a typical Ames home, a
   sensitivity curve for any single feature, and the six closest recorded sales.
 - **What-if levers** — one-click improvements, each repriced against the current home.
-- **Scenario book** — save valuations locally and export a Markdown appraisal.
+- **Scenario book** — save valuations locally, reload them into the studio, or export the book as JSON.
 - **Market explorer** — neighbourhood medians and a quality/living-area/price scatter
   for all 2,930 recorded sales.
 - **Model insights** — held-out R², RMSE, MAE, within-10% share, predicted-versus-actual

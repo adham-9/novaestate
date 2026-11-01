@@ -342,7 +342,6 @@ function renderStudio() {
 
   renderSensitivity(clean);
   renderLevers(clean);
-  renderReport(clean, price, low, high, comps, drivers);
   renderScenarios();
 }
 
@@ -409,47 +408,12 @@ function renderLevers(clean) {
     .join("");
 }
 
-function renderReport(clean, price, low, high, comps, drivers) {
-  const area = num(clean.GrLivArea);
-  const ppsf = price / Math.max(area, 1);
-  const lines = [
-    `# NovaEstate appraisal — ${clean.Neighborhood}`,
-    "",
-    `**Estimated market value:** ${money(price)}  `,
-    `**Likely range:** ${money(low)} – ${money(high)}  `,
-    `**Price per sq ft:** ${money(ppsf)}  `,
-    `**Home:** ${Math.round(area).toLocaleString("en-US")} sq ft · ${Math.round(num(clean.OverallQual))}/10 quality · built ${Math.round(num(clean.YearBuilt))}`,
-    "",
-    "## What shapes the estimate",
-    "",
-    "| Driver | This home | Typical | Impact |",
-    "| --- | --- | --- | --- |",
-    ...drivers.slice(0, 7).map(
-      (row) =>
-        `| ${row.label} | ${formatField(row.column, clean[row.column], true)} | ${formatField(row.column, bundle.defaults[row.column], true)} | ${money(Math.abs(row.impact))} ${row.impact >= 0 ? "lift" : "drag"} |`
-    ),
-    "",
-    "## Comparable sales",
-    "",
-    "| Neighbourhood | Living area | Quality | Built | Sold for | Match |",
-    "| --- | --- | --- | --- | --- | --- |",
-    ...comps.slice(0, 5).map(
-      (row) =>
-        `| ${row.neighborhood} | ${Math.round(row.area).toLocaleString("en-US")} | ${row.quality} | ${row.built} | ${money(row.price)} | ${row.match.toFixed(0)}% |`
-    ),
-    "",
-    `*Model: Ridge regression on ${Number(bundle.metrics.n_total).toLocaleString("en-US")} Ames sales. Validation R² ${Number(bundle.metrics.r2).toFixed(3)}, MAE ${money(bundle.metrics.mae)}. A decision aid, not a licensed appraisal.*`,
-  ];
-  $("#report-preview").textContent = lines.join("\n");
-  $("#report-preview").dataset.report = lines.join("\n");
-}
-
 function renderScenarios() {
   $("#scenario-count").textContent = `${state.scenarios.length} saved`;
   $("#export-json").disabled = !state.scenarios.length;
   $("#clear-scenarios").disabled = !state.scenarios.length;
   if (!state.scenarios.length) {
-    $("#scenarios").innerHTML = `<div class="empty">No saved valuations yet. Shape a home and save it to build a comparison set.</div>`;
+    $("#scenarios").innerHTML = `<div class="empty">No saved valuations yet. Shape a home and save it to keep it here.</div>`;
     return;
   }
   $("#scenarios").innerHTML = state.scenarios
@@ -803,11 +767,6 @@ $("#export-json").addEventListener("click", () => {
     2
   );
   download("novaestate-scenarios.json", payload, "application/json");
-});
-
-$("#download-report").addEventListener("click", () => {
-  const text = $("#report-preview").dataset.report || "";
-  download("novaestate-appraisal.md", text, "text/markdown");
 });
 
 function download(filename, content, type) {
