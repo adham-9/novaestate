@@ -3,45 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#F6F3EC">
-<title>NovaEstate · Ames valuation studio</title>
-<meta name="description" content="A calibrated Ridge model and 2,930 real Ames sales in one studio. Shape a home and watch the estimate respond.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230E6B5C'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia' text-anchor='middle' fill='%23F6F3EC'%3EN%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#F2EFE7">
+<title>NovaEstate Atelier · read a home</title>
+<meta name="description" content="A quiet studio for reading home value. A calibrated Ridge model, 2,930 real Ames sales, and a house that responds to every detail.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%234F6B5B'/%3E%3Cpath d='M18 34l14-13 14 13v13H18z' fill='none' stroke='%23F4F1E9' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<div class="grain" aria-hidden="true"></div>
 <div class="ambient" aria-hidden="true"></div>
 
+<div class="loader" id="loader">
+  <div class="loader-mark">N</div>
+  <div class="loader-copy">
+    <b>NovaEstate Atelier</b>
+    <span id="loader-note">Waking the valuation model…</span>
+  </div>
+  <div class="loader-track"><i id="loader-progress"></i></div>
+</div>
+
 <header class="topbar">
-  <a class="brand" href="#studio" data-view="studio">
+  <a class="brand" href="#studio" data-view="studio" aria-label="NovaEstate Atelier home">
     <span class="mark">N</span>
-    <span class="brand-copy"><b>NovaEstate</b><small>Ames valuation studio</small></span>
+    <span class="brand-copy"><b>NovaEstate</b><small>valuation atelier</small></span>
   </a>
+
   <nav class="nav" aria-label="Sections">
     <button class="nav-btn active" data-view="studio">Studio</button>
     <button class="nav-btn" data-view="market">Market</button>
     <button class="nav-btn" data-view="model">Model</button>
   </nav>
-  <button class="btn primary small" data-view="studio">Value a home</button>
+
+  <div class="top-actions">
+    <button class="btn quiet small palette-open" id="open-palette" aria-label="Search anything (Ctrl K)">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.4"></circle><path d="M13.2 13.2L17 17"></path></svg>
+      <span>Search</span><kbd>⌘K</kbd>
+    </button>
+    <button class="btn quiet small" id="reset-home" title="Reset to a typical Ames home">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 8.2A6 6 0 1 1 4 11"></path><path d="M4.5 4.6v3.8h3.8"></path></svg>
+      <span>Reset</span>
+    </button>
+  </div>
 </header>
 
 <main>
+
   <!-- ================================================================ STUDIO -->
   <section class="view active" id="view-studio">
-    <div class="hero">
+
+    <section class="hero">
       <div class="hero-copy">
-        <div class="eyebrow">Ames, Iowa · machine-learning appraisal</div>
-        <h1>Know what a home is worth<br>before you <em>ask</em>.</h1>
+        <div class="eyebrow">Ames, Iowa · 2006 – 2010 · held-out R² 0.931</div>
+        <h1><span class="line">Read a house</span><span class="line">like a <em>story</em>.</span></h1>
         <p class="lede">
-          A calibrated Ridge model and 2,930 real Ames sales in one studio. Shape every
-          detail of a property and watch the estimate respond.
+          Every home has a shape, an age, a street and a set of quiet advantages.
+          Move anything — the drawing, the estimate and the reasoning respond together.
         </p>
+        <div class="hero-facts" id="hero-facts"></div>
+        <div class="hero-cue">
+          <span class="pulse"></span> Live model · computed in this browser
+        </div>
       </div>
-      <div class="hero-stats" id="hero-stats"></div>
-    </div>
+
+      <div class="portrait-card">
+        <div class="portrait-head">
+          <div>
+            <div class="kicker">Live portrait</div>
+            <h2 id="portrait-title">A typical Ames home</h2>
+          </div>
+          <span class="status"><i></i> repricing</span>
+        </div>
+        <div class="portrait-stage" id="portrait" aria-label="Interactive illustration of the current home"></div>
+        <div class="portrait-foot">
+          <div>
+            <div class="kicker">Estimated value</div>
+            <div class="portrait-price" id="hero-price">$0</div>
+            <div class="portrait-range" id="hero-range">—</div>
+          </div>
+          <div class="portrait-chips" id="hero-chips"></div>
+        </div>
+        <p class="portrait-hint">Tap any part of the house to tune it.</p>
+      </div>
+    </section>
 
     <div class="studio-grid">
       <section class="panel control-panel">
@@ -49,26 +96,49 @@
           <div><div class="kicker">The property</div><h2>Shape the home</h2></div>
           <span class="hint">Every change reprices instantly</span>
         </div>
+
         <div class="presets" id="presets"></div>
-        <div class="switch" id="form-switch">
-          <button class="active" data-form="essentials">Essentials</button>
-          <button data-form="advanced">Advanced</button>
+
+        <div class="quick-grid" id="quick-controls"></div>
+
+        <div class="switch-row">
+          <div class="switch" id="form-switch">
+            <button class="active" data-form="essentials">Essentials</button>
+            <button data-form="advanced">All details</button>
+          </div>
+          <label class="field-search" id="field-search-wrap">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.4"></circle><path d="M13.2 13.2L17 17"></path></svg>
+            <input id="field-search" type="search" placeholder="Find a detail" aria-label="Find a property detail">
+          </label>
         </div>
+
         <div class="form-grid" id="form-essentials"></div>
         <div class="advanced hidden" id="form-advanced"></div>
+        <div class="control-foot">
+          <span id="control-foot-note">79 details · the essentials are enough to start</span>
+          <button class="link-btn" id="expand-all">Expand all groups</button>
+        </div>
       </section>
 
       <aside class="visual-panel">
-        <div class="price-card" id="studio-price">
+        <div class="price-card" id="price-card">
           <div class="price-top">
             <span class="price-label">Estimated market value</span>
-            <span class="badge" id="price-badge">Market</span>
+            <span class="badge" id="price-badge">In line</span>
           </div>
           <div class="price-value" id="price-value">$0</div>
           <div class="price-range" id="price-range">—</div>
           <div class="meter"><i id="price-meter"></i></div>
           <div class="price-foot"><span id="price-ppsf">—</span><span id="price-footnote">—</span></div>
+          <div class="price-actions">
+            <button class="btn soft small" id="pin-compare">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9"></path><path d="M6.6 8.6L10 12l3.4-3.4"></path><path d="M4 16h12"></path></svg>
+              Pin to compare
+            </button>
+            <span class="price-benchmark" id="price-benchmark">—</span>
+          </div>
         </div>
+
         <div class="signal" id="studio-signal"></div>
         <div class="mini-grid" id="studio-minis"></div>
       </aside>
@@ -77,7 +147,7 @@
     <section class="section">
       <div class="section-head">
         <div><div class="kicker">Explainability</div><h2>The anatomy of this estimate</h2>
-          <p>What is pushing the number up, what is holding it back, and what happens if you change one thing.</p>
+          <p>What lifts the number, what holds it back, and what happens when one thing changes.</p>
         </div>
       </div>
       <div class="panel explain-panel">
@@ -86,52 +156,84 @@
           <button data-panel="sensitivity">Sensitivity</button>
           <button data-panel="comps">Comparable sales</button>
         </div>
+
         <div class="tab-panel active" id="panel-drivers">
           <div class="drivers-grid">
-            <div class="bar-chart" id="drivers-chart"></div>
+            <div class="diverging" id="drivers-chart"></div>
             <div class="table-wrap" id="drivers-table"></div>
           </div>
-          <p class="note">Each impact is measured against a typical Ames home: the estimate is recalculated with that single feature reset to the dataset's typical value. The effects are complementary, not strictly additive.</p>
+          <p class="note">Each impact recalculates the estimate with that single detail reset to a typical Ames value. Effects are complementary, not strictly additive.</p>
         </div>
+
         <div class="tab-panel" id="panel-sensitivity">
           <div class="sens-controls">
-            <label class="field compact"><span class="flabel">Vary one feature</span><select id="sens-feature"></select></label>
-            <div class="mini" id="sens-value"></div>
+            <label class="field compact"><span class="flabel">Vary one detail</span><select id="sens-feature"></select></label>
+            <div class="sens-current" id="sens-value"></div>
+            <button class="btn quiet small" id="sens-reset">Back to current</button>
           </div>
           <div id="sens-chart" class="line-chart"></div>
-          <p class="note">The curve holds every other attribute fixed. It shows the model's response, not a construction quote — moving a wall costs more than the value it adds.</p>
+          <p class="note">Hover the curve to read it, click to set that value. The model holds every other detail fixed — this is influence, not a construction quote.</p>
         </div>
+
         <div class="tab-panel" id="panel-comps">
           <div class="table-wrap"><table id="comps-table"></table></div>
-          <p class="note">Nearest recorded sales by location, living area, quality, age, basement and garage. Match is a similarity score, not a confidence level.</p>
+          <p class="note">Nearest recorded sales by location, living area, quality, age, basement and garage. Match is similarity, not confidence.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section character-section">
+      <div class="section-head">
+        <div><div class="kicker">Character</div><h2>How this home leans</h2>
+          <p>Six quiet measures, set against a typical Ames home and the neighbourhood around it.</p>
+        </div>
+      </div>
+      <div class="character-grid">
+        <div class="panel radar-panel">
+          <div class="panel-head"><div><div class="kicker">Profile</div><h3>This home vs typical</h3></div><span class="hint"><i class="dot sage"></i> this home <i class="dot clay"></i> typical</span></div>
+          <div id="radar" class="radar"></div>
+        </div>
+        <div class="panel narrative-panel">
+          <div class="kicker">Reading</div>
+          <h3 id="narrative-title">A steady middle-of-the-market home</h3>
+          <p id="narrative-body"></p>
+          <div class="hood-compare" id="hood-compare"></div>
+          <div class="hood-actions">
+            <label class="field compact"><span class="flabel">Neighbourhood</span><select id="hood-switch"></select></label>
+            <span class="hint">Change the street and the estimate follows.</span>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-head">
-        <div><div class="kicker">What-if lab</div><h2>Ways to add value</h2>
-          <p>One-click improvements, each repriced against your current home.</p></div>
+        <div><div class="kicker">What-if lab</div><h2>Ways to change the story</h2>
+          <p>Each move is repriced against your current home. Apply one and keep shaping.</p>
+        </div>
       </div>
       <div class="levers" id="levers"></div>
     </section>
 
     <section class="section">
       <div class="section-head">
-        <div><div class="kicker">Your workspace</div><h2>Keep the work</h2>
-          <p>Save the homes you care about and come back to them later.</p></div>
+        <div><div class="kicker">Your shelf</div><h2>Saved readings</h2>
+          <p>Keep homes worth returning to. They stay in this browser, never uploaded anywhere.</p>
+        </div>
       </div>
       <div class="workspace">
         <div class="panel">
-          <div class="panel-head"><div><div class="kicker">Scenario book</div><h3>Saved valuations</h3></div><span class="hint" id="scenario-count">0 saved</span></div>
+          <div class="panel-head">
+            <div><div class="kicker">Scenario book</div><h3>Saved valuations</h3></div>
+            <span class="hint" id="scenario-count">0 saved</span>
+          </div>
           <div class="save-row">
-            <input id="scenario-name" type="text" placeholder="Name this valuation" aria-label="Scenario name">
-            <button class="btn primary" id="save-scenario">Save valuation</button>
+            <input id="scenario-name" type="text" placeholder="Name this reading — e.g. “The one on Linden”" aria-label="Scenario name">
+            <button class="btn primary" id="save-scenario">Save reading</button>
           </div>
           <div id="scenarios" class="scenario-list"></div>
           <div class="row-actions">
-            <button class="btn ghost small" id="export-json">Export JSON</button>
-            <button class="btn ghost small" id="clear-scenarios">Clear book</button>
+            <button class="btn quiet small" id="clear-scenarios">Clear shelf</button>
           </div>
         </div>
       </div>
@@ -140,52 +242,74 @@
 
   <!-- ================================================================ MARKET -->
   <section class="view" id="view-market">
-    <div class="section-head">
-      <div><div class="kicker">Market explorer</div><h2>The market behind the model</h2>
-        <p>Every recorded sale, every neighbourhood, laid out so patterns become obvious.</p></div>
+    <div class="section-head page-head">
+      <div><div class="kicker">Market explorer</div><h2>The street behind the number</h2>
+        <p>Every recorded sale, every neighbourhood, laid out so the patterns become obvious.</p>
+      </div>
+      <div class="page-head-mark">2,930<span>sales</span></div>
     </div>
     <div class="mini-grid wide" id="market-stats"></div>
+
     <div class="market-grid">
       <div class="panel">
-        <div class="panel-head"><div><div class="kicker">Median sale price</div><h3>Neighbourhood league table</h3></div><span class="hint">28 areas</span></div>
+        <div class="panel-head"><div><div class="kicker">Median sale price</div><h3>Neighbourhood league table</h3></div><span class="hint">Click a row to explore</span></div>
         <div class="hood-bars" id="hood-bars"></div>
       </div>
       <div class="panel">
-        <div class="panel-head"><div><div class="kicker">Space, quality, price</div><h3>Every sale</h3></div><span class="hint">Colour = quality</span></div>
+        <div class="panel-head"><div><div class="kicker">Space, quality, price</div><h3>Every sale</h3></div><span class="hint" id="market-legend">Colour = quality</span></div>
         <div class="filters">
           <label class="field compact"><span class="flabel">Minimum quality <em id="market-quality-out">1</em></span><input type="range" id="market-quality" min="1" max="10" step="1" value="1"></label>
           <label class="field compact"><span class="flabel">Neighbourhood</span><select id="market-hood"><option value="">All neighbourhoods</option></select></label>
         </div>
-        <canvas id="market-scatter" class="scatter" height="380"></canvas>
+        <div class="canvas-wrap">
+          <canvas id="market-scatter" class="scatter" height="380"></canvas>
+          <div class="chart-tip" id="chart-tip"></div>
+        </div>
         <p class="caption" id="market-count"></p>
+      </div>
+    </div>
+
+    <div class="market-lower">
+      <div class="panel" id="hood-detail">
+        <div class="panel-head"><div><div class="kicker">Neighbourhood</div><h3 id="hood-detail-name">All of Ames</h3></div><button class="btn quiet small" id="hood-use">Use this street</button></div>
+        <div id="hood-detail-body"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><div class="kicker">Distribution</div><h3>Where the estimate sits</h3></div><span class="hint">All sales</span></div>
+        <div class="canvas-wrap"><canvas id="price-dist" height="260"></canvas></div>
+        <p class="caption" id="dist-caption">The clay line is your current estimate.</p>
       </div>
     </div>
   </section>
 
   <!-- ================================================================= MODEL -->
   <section class="view" id="view-model">
-    <div class="section-head">
+    <div class="section-head page-head">
       <div><div class="kicker">Model insights</div><h2>How much to trust the number</h2>
-        <p>The model's held-out performance, its strongest coefficients and what it leans on.</p></div>
+        <p>Held-out performance, the strongest signals, and the path from your details to a dollar estimate.</p>
+      </div>
+      <div class="page-head-mark">0.931<span>R²</span></div>
     </div>
     <div class="mini-grid wide" id="model-metrics"></div>
     <div class="two-col">
       <div class="panel">
         <div class="panel-head"><div><div class="kicker">Held-out homes</div><h3>Predicted versus actual</h3></div><span class="hint">Dashed line = perfect</span></div>
-        <canvas id="parity" class="scatter" height="380"></canvas>
+        <div class="canvas-wrap"><canvas id="parity" class="scatter" height="380"></canvas></div>
         <p class="caption" id="parity-caption"></p>
       </div>
       <div class="panel">
         <div class="panel-head"><div><div class="kicker">Signals</div><h3>Strongest coefficients</h3></div><span class="hint">Transformed space</span></div>
-        <div class="bar-chart" id="coef-bars"></div>
+        <div class="diverging" id="coef-bars"></div>
         <p class="caption">Coefficient size ranks influence rather than dollars.</p>
       </div>
     </div>
+
     <div class="section">
       <div class="section-head"><div><div class="kicker">This home</div><h2>Which groups move the estimate</h2>
-        <p>Absolute summed influence of every field in each group.</p></div></div>
+        <p>Absolute summed influence of every detail in each group.</p></div></div>
       <div class="panel"><div class="bar-chart" id="group-bars"></div></div>
     </div>
+
     <div class="section">
       <div class="section-head"><div><div class="kicker">Under the hood</div><h2>The pipeline</h2>
         <p>A transparent, reproducible path from form entries to a dollar estimate.</p></div></div>
@@ -195,9 +319,39 @@
 </main>
 
 <footer class="footer">
-  <span>NovaEstate · an interactive study of the Ames Housing dataset</span>
+  <span>NovaEstate Atelier · an interactive reading of the Ames Housing dataset</span>
   <span>Ridge regression · 2,930 sales · 245 encoded signals</span>
 </footer>
+
+<!-- ------------------------------------------------------------- compare tray -->
+<div class="compare-tray hidden" id="compare-tray" aria-live="polite">
+  <button class="compare-summary" id="compare-toggle" aria-expanded="false">
+    <span class="pin-dot"></span>
+    <span class="compare-label">Pinned <b id="compare-name">home</b></span>
+    <span class="compare-price" id="compare-a">$0</span>
+    <span class="compare-arrow">→</span>
+    <span class="compare-price" id="compare-b">$0</span>
+    <span class="compare-delta" id="compare-delta">+0%</span>
+    <span class="chev">⌃</span>
+  </button>
+  <div class="compare-body" id="compare-body"></div>
+  <button class="compare-close" id="compare-unpin" aria-label="Unpin comparison">✕</button>
+</div>
+
+<!-- ----------------------------------------------------------- command palette -->
+<div class="palette-overlay hidden" id="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="palette">
+    <div class="palette-input">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.4"></circle><path d="M13.2 13.2L17 17"></path></svg>
+      <input id="palette-input" type="text" placeholder="Jump to a detail, a view, or an action…" autocomplete="off" spellcheck="false">
+      <kbd>esc</kbd>
+    </div>
+    <div class="palette-results" id="palette-results"></div>
+    <div class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> select</span><span><kbd>esc</kbd> close</span></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
 
 <script type="module" src="app.js"></script>
 </body>

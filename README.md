@@ -1,24 +1,28 @@
-# NovaEstate
+# NovaEstate — Valuation Atelier
 
-An interactive Ames, Iowa housing valuation studio. It runs the real trained Ridge
-model in the browser, so every number on the site is produced by the fitted pipeline
-rather than a mock.
+An interactive Ames, Iowa housing valuation studio. The real trained Ridge model runs
+in the browser, so every number on the site is produced by the fitted pipeline rather
+than a mock.
 
-**Live site:** https://novaestate-ames.vercel.app
+**Live site:** https://novaestate-app.vercel.app
 
 ## What it does
 
 - **Studio** — shape a property (14 essentials plus 64 advanced fields) and watch the
-  estimate reprice instantly, with a likely range, price per sq ft and a comp-based
-  deal signal.
-- **Explainability** — value drivers measured against a typical Ames home, a
-  sensitivity curve for any single feature, and the six closest recorded sales.
+  estimate reprice instantly: live house portrait, likely range, price per sq ft and a
+  comp-based deal signal.
+- **Explainability** — value drivers measured against a typical Ames home, a sensitivity
+  curve for any single feature, and the closest recorded sales.
 - **What-if levers** — one-click improvements, each repriced against the current home.
-- **Scenario book** — save valuations locally, reload them into the studio, or export the book as JSON.
-- **Market explorer** — neighbourhood medians and a quality/living-area/price scatter
+- **Saved shelf** — keep valuations in local storage and reload them into the studio.
+- **Market explorer** — neighbourhood medians plus a quality/living-area/price scatter
   for all 2,930 recorded sales.
 - **Model insights** — held-out R², RMSE, MAE, within-10% share, predicted-versus-actual
-  parity and the strongest coefficients.
+  parity, the strongest coefficients and group-level influence.
+- **Compare tray and command palette** — pin homes for side-by-side reading, jump
+  anywhere with `Ctrl/Cmd + K`.
+
+There are no data-download or export controls anywhere in the interface.
 
 ## Model
 
@@ -52,5 +56,6 @@ from `file://`.
 
 ## Deploy
 
-Hosted on Vercel as a static site. `vercel.json` sets clean URLs, a 1-hour cache on
+Hosted on Vercel as a static site. Pushing to `main` runs the GitHub Actions workflow in
+`.github/workflows/deploy.yml`. `vercel.json` sets clean URLs, a 1-hour cache on
 `model.json` and basic security headers.
